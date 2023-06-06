@@ -118,8 +118,7 @@ C++ Backend
 Interface to Plaquette
 ---------------
 `Plaquette <https://github.com/qc-design/plaquette>`_ is undergoing heavy development, so this interface is likely to change. If you are benchmarking
-our decoder, please only sandwich the frontend ``decode(syndrome,erasure)`` function with timestamps (see the benchmarks). Otherwise
-you are timing other computations unrelated to the decoding.
+our decoder, please do not use the plaquette interface unless you know what you are doing. You will be timing other computations unrelated to the decoding.
 
 .. code-block:: python
 
@@ -134,7 +133,6 @@ you are timing other computations unrelated to the decoding.
 	
 Benchmarks
 ==========
-
 
 For our benchmarks, we have been careful to only time the intrinsic Pymatching-v2 and FusionBlossom decoding
 functions. We do not use the decode_batch function for Pymatching-v2 because this does not test the intrinsic speed of the
