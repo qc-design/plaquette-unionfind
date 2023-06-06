@@ -1,0 +1,65 @@
+name: Testing (Windows)
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  cpptests:
+    name: C++ tests (Windows)
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest]
+    steps:
+      - name: Cancel previous runs
+        uses: styfle/cancel-workflow-action@0.10.0
+        with:
+          access_token: ${{ github.token }}
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+
+      - name: Configure MSVC for amd64 # Use cl.exe as a default compiler
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: amd64
+
+      - name: Build
+        run: |
+            cmake . -BBuild  -DPLAQUETTE_UNIONFIND_BUILD_TESTS=ON
+            cmake --build ./Build --config Debug
+
+      - name: Run
+        run: |
+            .\Build\plaquette_unionfind\src\tests\Debug\test_runner.exe
+
+  python_tests:
+    # Avoid to run the job twice, once on PR merge and once on the fact that this
+    # merge-event is also a push to the master branch
+    if: github.event.pull_request.merged == false || github.event_name == 'push'
+    name: Python tests (Windows)
+    runs-on: ubuntu-22.04
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+        cache: 'pip'
+        cache-dependency-path: 'requirements*.txt'
+    - name: Configure MSVC for amd64 # Use cl.exe as a default compiler
+      uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: amd64
+    # This will make ninja available, which is needed for the graph API
+    - name: Install Python packages
+      run: pip install -r requirements.txt -r requirements_dev.txt
+    - name: Install Plaquette Graph dependency
+      run: unzip external/plaquette-graph.zip && pip install ./plaquette-graph-main
+    - name: Install plaquette
+      run: pip install .
+    - name: Run unit tests
+      run: pytest

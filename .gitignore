@@ -1,0 +1,9 @@
+*~
+*#*
+*pycache*
+*build*
+*.egg-info
+[.][v]env
+.idea
+
+*.so

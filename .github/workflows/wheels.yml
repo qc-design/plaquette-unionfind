@@ -1,0 +1,41 @@
+name: Python wheels builds
+on:
+  pull_request:
+  push:
+    tags: ['*']
+  workflow_dispatch:
+
+jobs:
+  build_wheels:
+    name: ${{ matrix.os }} wheel for Python ${{ matrix.python-version }}
+    strategy:
+      matrix:
+        os: [ubuntu, macos, windows]
+        python-version: ["3.10", "3.11"]
+    runs-on: ${{ matrix.os }}-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v3
+      - name: Install clang++ on macOS
+        if: ${{ startsWith('macos', matrix.os) || startsWith('m1', matrix.os) }}
+        run: brew install llvm
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v2.12.3
+      - uses: actions/upload-artifact@v3
+        with:
+          path: ./wheelhouse/*.whl
+
+  make_release:
+    if: github.ref_type == 'tag'
+    needs: [build_wheels]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download artifacts
+      uses: actions/download-artifact@v3
+      with:
+        path: artifacts
+    - name: Draft release for ${{ github.ref_name }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        gh release create ${{ github.ref_name }} artifacts/**/*.whl --verify-tag --latest -d -t "Release ${{ github.ref_name }}"

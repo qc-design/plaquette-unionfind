@@ -1,0 +1,12 @@
+build
+cibuildwheel
+cmake
+ninja
+numpy
+pybind11
+pytest
+pytest-cov
+pytest-mock
+pybind11[global]
+setuptools>=64.0
+wheel
