@@ -6,3 +6,4 @@ exhale
 pybind11
 graphviz
 furo
+plaquette_graph

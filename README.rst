@@ -53,6 +53,12 @@ You can install just the python interface with (this quietly builds the C++ back
    pip install -r requirements.txt
    pip install .
 
+or get the latest stable release from PyPI
+
+.. code-block:: console
+
+    pip install plaquette_unionfind
+
 
 You can run the python frontend tests with
 
