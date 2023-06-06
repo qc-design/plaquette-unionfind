@@ -142,29 +142,31 @@ our decoder, please do not use the plaquette interface unless you know what you 
 Benchmarks
 ==========
 
-For our benchmarks, we have been careful to only time the intrinsic Pymatching-v2 and FusionBlossom decoding
-functions. We do not use the decode_batch function for Pymatching-v2 because this does not test the intrinsic speed of the
-decoder. We also set FusionBlossom to single-threaded mode since we are running both our code and Pymatching-v2 in that mode.
-All benchmarks are performed on a m6id.4xlarge AWS node. All benchmarks are reproducible (see below) using our scripts on
-a m6id.4xlarge.
+We benchmark plaquette-unionfind along with two of the leading open source decorders `PyMatching-v2 <https://arxiv.org/abs/2303.15933>`_ 
+and `FusionBlosson <https://arxiv.org/abs/2305.08307>`_. 
+
+For our benchmarks, we have been careful to only time the intrinsic PyMatching and FusionBlossom decoding
+functions. Only the intrinsic speed of the decoder was timed, so e.g., we do not yet benchmark along with 
+the decode_batch function for Pymatching-v2. We also set FusionBlossom to single-threaded mode for a fair 
+comparison with PyMatching and plaquette-unionfind. All benchmarks are performed on a m6id.4xlarge AWS node. 
+All benchmarks are reproducible (see below) using our scripts on a m6id.4xlarge.
 
 For our first benchmark, we use the 2-D (perfect measurement) Planar Code with p = 0.05 depolarization
-error. We see around 8-10x speedup over competitors
+error. We observe up to 8-10x speedup over PyMatching and FusionBlossom.
 
 .. image:: https://github.com/qc-design/plaquette-unionfind/blob/40fb8fab11ad60e281089e3b0b26865c899749cb/benchmarks/perfect_planar_0.05.png?raw=true
    :align: center
    :width: 500px 
 
-For our second benchmark we use the 3-D (imperfect measurement) Rotated Planar Code with p = 0.01 depolarization
-error and p = 0.01 measurement error. We see that Pymatching-v2 is much more sensitive to the lattice size.
+For our second benchmark we use the 3-D Rotated Planar Code to account for measurement errors, with p = 0.01 depolarization
+error and p = 0.01 measurement error. We observe that Pymatching is more sensitive to the lattice size than the other decoders.
 
 .. image:: https://github.com/qc-design/plaquette-unionfind/blob/40fb8fab11ad60e281089e3b0b26865c899749cb/benchmarks/imperfect_rotated_planar_0.01.png?raw=true
    :align: center
    :width: 500px 
 
-
-Finally we benchmark a 30x30 Rotated Planar Code (29 rounds of measurement) with varying probability. We see that
-fusion-blossom is heavily sensitive to the error probability.
+Finally we benchmark a 30x30 Rotated Planar Code (29 rounds of measurement) with varying probability. We observe that
+FusionBlossom is sensitive to the error probability.
 
 .. image:: https://github.com/qc-design/plaquette-unionfind/blob/40fb8fab11ad60e281089e3b0b26865c899749cb/benchmarks/imperfect_rotated_planar_fixed_size.png?raw=true
    :align: center
