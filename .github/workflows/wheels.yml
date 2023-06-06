@@ -24,18 +24,3 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           path: ./wheelhouse/*.whl
-
-  make_release:
-    if: github.ref_type == 'tag'
-    needs: [build_wheels]
-    runs-on: ubuntu-latest
-    steps:
-    - name: Download artifacts
-      uses: actions/download-artifact@v3
-      with:
-        path: artifacts
-    - name: Draft release for ${{ github.ref_name }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        gh release create ${{ github.ref_name }} artifacts/**/*.whl --verify-tag --latest -d -t "Release ${{ github.ref_name }}"
