@@ -139,53 +139,6 @@ our decoder, please do not use the plaquette interface unless you know what you 
         }
         decoder = plaquette_unionfind.UnionFindDecoderInterface.from_code(code, qed, weighted=False)
     
-Benchmarks
-==========
-
-We benchmark plaquette-unionfind along with two of the leading open source decorders `PyMatching-v2 <https://arxiv.org/abs/2303.15933>`_ 
-and `FusionBlosson <https://arxiv.org/abs/2305.08307>`_. 
-
-For our benchmarks, we have been careful to only time the intrinsic PyMatching and FusionBlossom decoding
-functions. Only the intrinsic speed of the decoder was timed, so e.g., we do not yet benchmark along with 
-the decode_batch function for Pymatching-v2. We also set FusionBlossom to single-threaded mode for a fair 
-comparison with PyMatching and plaquette-unionfind. All benchmarks are performed on a m6id.4xlarge AWS node. 
-All benchmarks are reproducible (see below) using our scripts on a m6id.4xlarge.
-
-For our first benchmark, we use the 2-D (perfect measurement) Planar Code with p = 0.05 depolarization
-error. We observe up to 8-10x speedup over PyMatching and FusionBlossom.
-
-.. image:: https://github.com/qc-design/plaquette-unionfind/blob/40fb8fab11ad60e281089e3b0b26865c899749cb/benchmarks/perfect_planar_0.05.png?raw=true
-   :align: center
-   :width: 500px 
-
-For our second benchmark we use the 3-D Rotated Planar Code to account for measurement errors, with p = 0.01 depolarization
-error and p = 0.01 measurement error. We observe that Pymatching is more sensitive to the lattice size than the other decoders.
-
-.. image:: https://github.com/qc-design/plaquette-unionfind/blob/40fb8fab11ad60e281089e3b0b26865c899749cb/benchmarks/imperfect_rotated_planar_0.01.png?raw=true
-   :align: center
-   :width: 500px 
-
-Finally we benchmark a 30x30 Rotated Planar Code (29 rounds of measurement) with varying probability. We observe that
-FusionBlossom is sensitive to the error probability.
-
-.. image:: https://github.com/qc-design/plaquette-unionfind/blob/40fb8fab11ad60e281089e3b0b26865c899749cb/benchmarks/imperfect_rotated_planar_fixed_size.png?raw=true
-   :align: center
-   :width: 500px 
-
-To run all three benchmarks, use the following bash commands:
-
-.. code-block:: console
-
-   source benchmarks/run_perfect_planar_benchmark.sh 0.05
-   source benchmarks/run_imperfect_rotated_planar_benchmark.sh 0.01
-   source benchmarks/run_imperfect_rotated_planar_fixed_size_benchmark.sh
-
-   python plot_benchmark_1.py perfect_planar_0.05.dat perfect_planar_0.05.png "Surface Code Benchmark #1" 5
-   python plot_benchmark_2.py imperfect_rotated_planar_0.01.dat imperfect_rotated_planar_0.01.png "Surface Code Benchmark #2" 5
-   python plot_benchmark_3.py imperfect_rotated_planar_fixed_size.dat imperfect_rotated_planar_fixed_size.png "Surface Code Benchmark #3" 1
-        
-.. benchmark-end-inclusion-marker-do-not-remove
-
 Documentation
 =============
 
