@@ -74,13 +74,16 @@ else()
 endif()
 set(PLAQUETTE_GRAPH_INC_DIR "${plaquette-graph_SOURCE_DIR}/plaquette_graph/src")
 
-
 if(PLAQUETTE_UNIONFIND_BUILD_EXAMPLES)
   add_subdirectory("examples/cpp")
 endif()
 
 if (PLAQUETTE_UNIONFIND_BUILD_TESTS)
     add_subdirectory("plaquette_unionfind/src/tests")
+endif()
+
+if (PLAQUETTE_UNIONFIND_BUILD_MICRO_BENCHMARKS)
+    add_subdirectory("plaquette_unionfind/src/micro_benchmarks")
 endif()
 
 if(PLAQUETTE_UNIONFIND_BUILD_BINDINGS)

@@ -4,6 +4,8 @@ project(plaquette_union_find_tests)
 
 set(CMAKE_CXX_STANDARD 20)
 
+message(STATUS "PLAQUETTE_UNIONFIND_BUILD_TESTS: True")
+
 # Default build type for test code is Debug
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug)

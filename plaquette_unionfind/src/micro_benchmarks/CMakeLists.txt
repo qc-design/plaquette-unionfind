@@ -4,7 +4,7 @@ project(micro_benchmarks)
 
 set(CMAKE_CXX_STANDARD 20) # At least C++20 is required
 
-message(STATUS "ENABLE_GB is ON. Find GBenchmark.")
+message(STATUS "PLAQUETTE_UNIONFIND_BUILD_MICRO_BENCHMARKS: True")
 
 include(FetchContent)
 
@@ -37,9 +37,21 @@ endif()
 
 set(CMAKE_BUILD_TYPE Release)   
 
-add_executable(grow_cluster_benchmark grow_cluster_benchmark.cpp)            
-target_link_libraries(grow_cluster_benchmark
+add_executable(clusters_grow_benchmark clusters_grow_benchmark.cpp)            
+target_link_libraries(clusters_grow_benchmark
   PRIVATE
   benchmark::benchmark
   ${CMAKE_THREAD_LIBS_INIT}
 )
+
+add_executable(syndrome_validation_benchmark syndrome_validation_benchmark.cpp)            
+target_link_libraries(syndrome_validation_benchmark
+  PRIVATE
+  benchmark::benchmark
+  ${CMAKE_THREAD_LIBS_INIT}
+)
+
+target_include_directories(clusters_grow_benchmark PUBLIC ${CMAKE_SOURCE_DIR}/plaquette_unionfind/src)
+target_include_directories(clusters_grow_benchmark PUBLIC "${PLAQUETTE_GRAPH_INC_DIR}")
+target_include_directories(syndrome_validation_benchmark PUBLIC ${CMAKE_SOURCE_DIR}/plaquette_unionfind/src)
+target_include_directories(syndrome_validation_benchmark PUBLIC "${PLAQUETTE_GRAPH_INC_DIR}")
