@@ -2,6 +2,7 @@
 #include <catch2/catch.hpp>
 
 #include "Test_Cluster.hpp"
+#include "Test_ClusterOpt.hpp"
 #include "Test_ClusterBoundary.hpp"
 #include "Test_StabilizerCode.hpp"
 #include "Test_UnionFind.hpp"
