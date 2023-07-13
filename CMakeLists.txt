@@ -55,24 +55,15 @@ ENDIF()
 
 add_subdirectory("plaquette_unionfind/src")
 
-option(PLAQUETTE_FETCH_GRAPH_REPO "Use local plaquette_graph library. Set PLAQUETTE_GRAPH_INC_DIR if you are using this option." OFF)
 
-if(NOT PLAQUETTE_FETCH_GRAPH_REPO)
-  cmake_policy(SET CMP0135 OLD) # to suppress warning
-  include(FetchContent)
-  FetchContent_Declare(plaquette-graph
-    URL ${CMAKE_SOURCE_DIR}/external/plaquette-graph.zip
-  )
-  FetchContent_MakeAvailable(plaquette-graph)
-else()
-  include(FetchContent)
-  FetchContent_Declare(plaquette-graph
-    GIT_REPOSITORY git@github.com:qc-design/plaquette-graph.git
-    GIT_TAG        main
-  )
-  FetchContent_MakeAvailable(plaquette-graph)
-endif()
+include(FetchContent)
+FetchContent_Declare(plaquette-graph
+  GIT_REPOSITORY git@github.com:qc-design/plaquette-graph.git
+  GIT_TAG        master
+)
+FetchContent_MakeAvailable(plaquette-graph)
 set(PLAQUETTE_GRAPH_INC_DIR "${plaquette-graph_SOURCE_DIR}/plaquette_graph/src")
+message(STATUS "PLAQUETTE_GRAPH_INC_DIR: ${PLAQUETTE_GRAPH_INC_DIR}")
 
 if(PLAQUETTE_UNIONFIND_BUILD_EXAMPLES)
   add_subdirectory("examples/cpp")
